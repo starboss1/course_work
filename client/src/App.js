@@ -1,78 +1,71 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import { Header } from './components/Header'
-import { Users } from './components/Users'
-import { DisplayBoard } from './components/DisplayBoard'
-import CreateUser from './components/CreateUser'
-import { getAllUsers, createUser } from './services/UserService'
+import React, {useEffect} from 'react';
+import Quill from 'quill';
+import 'quill/dist/quill.bubble.css';
+import Sharedb from 'sharedb/lib/client';
+import richText from 'rich-text';
 
-class App extends Component {
+// Registering the rich text type to make sharedb work
+// with our quill editor
+Sharedb.types.register(richText.type);
 
-  state = {
-    user: {},
-    users: [],
-    numberOfUsers: 0
-  }
 
-  createUser = (e) => {
-      createUser(this.state.user)
-        .then(response => {
-          console.log(response);
-          this.setState({numberOfUsers: this.state.numberOfUsers + 1})
+// Connecting to out socket server
+
+const socket = new WebSocket('ws://127.0.0.1:8080');
+const connection = new Sharedb.Connection(socket);
+
+// Querying for out document
+
+const doc = connection.get('documents', 'firstDocument');
+
+function App() {
+  useEffect(() => {
+    doc.subscribe((err) => {
+      if(err) throw err;
+
+      const toolbarOptions = ['bold', 'italic', 'underline' , 'strike', 'align'];
+      const options = {
+        theme: 'bubble',
+        modules: {
+          toolbar: toolbarOptions,
+        },
+      };
+
+      let quill= new Quill('#editor', options);
+      /**
+       * On Initialising if data is present in server
+       * Updaing its content to editor
+       */
+      quill.setContents(doc.data);
+
+      /**
+       * On Text change publishing to our server
+       * so that it can be broadcasted to all other clients
+       */
+      quill.on('text-change', (delta, oldDelta, source) => {
+        if(source !== 'user') return;
+        doc.submitOp(delta, {source: quill});
       });
-  }
 
-  getAllUsers = () => {
-    getAllUsers()
-      .then(users => {
-        console.log(users)
-        this.setState({users: users, numberOfUsers: users.length})
+      /** listening to changes in the document
+       * that is coming from our server
+       */
+      doc.on('op', (op, source) => {
+        if(source === quill) return;
+        quill.updateContents(op);
       });
-  }
+    });
 
-  onChangeForm = (e) => {
-      let user = this.state.user
-      if (e.target.name === 'firstname') {
-          user.firstName = e.target.value;
-      } else if (e.target.name === 'lastname') {
-          user.lastName = e.target.value;
-      } else if (e.target.name === 'email') {
-          user.email = e.target.value;
-      }
-      this.setState({user})
-  }
+    return () => {
+      connection.close();
+    };
+  }, []);
 
-  render() {
-    
-    return (
-      <div className="App">
-        <Header></Header>
-        <div className="container mrgnbtm">
-          <div className="row">
-            <div className="col-md-8">
-                <CreateUser 
-                  user={this.state.user}
-                  onChangeForm={this.onChangeForm}
-                  createUser={this.createUser}
-                  >
-                </CreateUser>
-            </div>
-            <div className="col-md-4">
-                <DisplayBoard
-                  numberOfUsers={this.state.numberOfUsers}
-                  getAllUsers={this.getAllUsers}
-                >
-                </DisplayBoard>
-            </div>
-          </div>
-        </div>
-        <div className="row mrgnbtm">
-          <Users users={this.state.users}></Users>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <div style={{margin: '5%', border: '1px solid'}}>
+      <div id='editor'></div>
+    </div>
+  );
 }
 
 export default App;

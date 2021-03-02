@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Client of course work",
   "private": true,
-
   "author": "Sergei Konoshenko",
   "license": "ISC",
   "dependencies": {
@@ -11,10 +10,15 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.0",
     "bootstrap": "^4.6.0",
+    "quill": "^1.3.7",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.0",
     "react-dom": "^17.0.1",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "rich-text": "^4.1.0",
+    "sharedb": "^1.7.0",
+    "web-vitals": "^1.1.0",
+    "ws": "^7.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,7 +28,10 @@
   },
   "proxy": "http://localhost:3080",
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": 
+    ["react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
