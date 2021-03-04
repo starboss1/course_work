@@ -1,59 +1,108 @@
-import WebSocket from 'ws';
-import WebSocketJSONStream from '@teamwork/websocket-json-stream';
-import ShareDB from 'sharedb';
-import richText from 'rich-text'
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import db from './app/models/index.js';
+import dbConfig from './app/config/db.config.js';
+import authRoutes from './app/routes/auth.routes.js';
+import userRoutes from './app/routes/user.routes.js';
 
+const app = express();
 
-ShareDB.types.register(richText.type);
+const corsOptions = {
+    origin: 'http://localhost:8080'
+};
 
-const shareDBServer = new ShareDB();
-const connection = shareDBServer.connect();
+app.use(cors(corsOptions));
 
-const doc = connection.get('documents', 'firstDocument');
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
-doc.fetch((err) => {
-    if(err) throw err;
-    if(doc.type === null){
-        doc.create([{insert: 'Hello World!'}], 'rich-text', () => {
-            const wss = new WebSocket.Server({port: 8080});
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-            wss.on('connection', (ws) =>{
-                const jsonStream = new WebSocketJSONStream(ws);
-                shareDBServer.listen(jsonStream);
-            });
-        });
-    }
-    return;
+const Role = db.role;
+
+db.mongoose
+    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+        useNewUrlParsed: true,
+        useUnifiedTopology: true
+    })
+    .then(() => {
+        console.log('Successfully connect to MongoDB.');
+        initial();
+    })
+    .catch(err => {
+        console.error('Connection error', err);
+        process.exit();
+    });
+
+// simple route
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome test app' });
+});
+authRoutes(app);
+userRoutes(app);
+
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
-// import express from 'express';
-// import bodyParser from 'body-parser';
+function initial () {
+    Role.estimatedDocumentCount((err, count) => {
+        if (!err && count === 0) {
+            new Role({ name: 'user' })
+                .save(err => {
+                    if (err) {
+                        console.log('error', err);
+                    }
 
-// const app = express(),
-//     port = 3080;
+                    console.log('added "user" to roles collection');
+                });
+        }
+    });
+}
 
-// const users = [];
+// import WebSocket from 'ws';
+// import WebSocketJSONStream from '@teamwork/websocket-json-stream';
+// import ShareDB from 'sharedb';
+// import richText from 'rich-text'
 
-// app.use(bodyParser.json());
+// /**
+//  * By Default Sharedb uses JSON0 OT type.
+//  * To Make it compatible with our quill editor.
+//  * We are using this npm package called rich-text
+//  * which is based on quill delta
+//  */
+// ShareDB.types.register(richText.type);
 
-// app.get('/api/users', (req, res) => {
-//     console.log('/api/users called !!!')
-//     res.json(users);
-// });
+// const shareDBServer = new ShareDB();
+// const connection = shareDBServer.connect();
 
+// /**
+//  * 'documents' is collection name(table name in sql terms)
+//  * 'firstDocument' is the id of the document
+//  */
+// const doc = connection.get('documents', 'firstDocument');
 
-// app.post('/api/user', (req, res) => {
-//     const user = req.body.user;
-//     console.log('Adding user:::::::::', user);
-//     users.push(user);
-//     res.json('user added');
-// });
+// doc.fetch((err) => {
+//     if(err) throw err;
+//     if(doc.type === null){
+//         /**
+//          * If there is no document with id "firstDocument" in memory
+//          * we are creating it and then starting up our ws server
+//          */
+//         doc.create([{insert: 'Hello World!'}], 'rich-text', () => {
+//             const wss = new WebSocket.Server({port: 8080});
 
-
-// app.get('/', (req,res) => {
-//     res.send('App Works !!!!');
-// });
-
-// app.listen(port, () => {
-//     console.log(`Server listening on the port::${port}`);
+//             wss.on('connection', (ws) =>{
+//                 // For transport we are using a ws JSON stream for communication
+//                 // that can read and write js objects.
+//                 const jsonStream = new WebSocketJSONStream(ws);
+//                 shareDBServer.listen(jsonStream);
+//             });
+//         });
+//     }
+//     return;
 // });
