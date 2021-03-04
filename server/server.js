@@ -9,7 +9,7 @@ import userRoutes from './app/routes/user.routes.js';
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:8080'
+    origin: 'http://localhost:3000'
 };
 
 app.use(cors(corsOptions));

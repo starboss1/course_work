@@ -9,14 +9,21 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "quill": "^1.3.7",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.0",
     "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-validation": "^3.0.7",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "rich-text": "^4.1.0",
     "sharedb": "^1.7.0",
+    "validator": "^13.5.2",
     "web-vitals": "^1.1.0",
     "ws": "^7.4.3"
   },
@@ -28,10 +35,13 @@
   },
   "proxy": "http://localhost:3080",
   "eslintConfig": {
-    "extends": 
-    ["react-app",
+    "extends": [
+      "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "import/no-anonymous-default-export": 0
+    }
   },
   "browserslist": {
     "production": [
@@ -44,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
   }
 }
