@@ -12,7 +12,7 @@ const required = (value) => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
-                This field is required!
+                Це поле є обов'язковим!
             </div>
         );
     }
@@ -77,7 +77,7 @@ const Login = (props) => {
     
             <Form onSubmit={handleLogin} ref={form}>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Логін</label>
                 <Input
                   type="text"
                   className="form-control"
@@ -89,7 +89,7 @@ const Login = (props) => {
               </div>
     
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Пароль</label>
                 <Input
                   type="password"
                   className="form-control"

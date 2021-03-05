@@ -12,7 +12,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        Це поле є обов'язковим!
       </div>
     );
   }
@@ -22,7 +22,7 @@ const validEmail = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        Неправильна форма пошти.
       </div>
     );
   }
@@ -32,7 +32,7 @@ const vusername = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
+        Логін має містити від 3 до 20 символів.
       </div>
     );
   }
@@ -42,7 +42,7 @@ const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        Пароль має містити від 6 до 40 символів.
       </div>
     );
   }
@@ -106,7 +106,7 @@ const Register = () => {
           {!successful && (
             <div>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Логін</label>
                 <Input
                   type="text"
                   className="form-control"
@@ -118,7 +118,7 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Пошта</label>
                 <Input
                   type="text"
                   className="form-control"
@@ -130,7 +130,7 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Пароль</label>
                 <Input
                   type="password"
                   className="form-control"
