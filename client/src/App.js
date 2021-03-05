@@ -9,6 +9,7 @@ import Register from "./components/register/register.jsx";
 import Home from "./components/home/home.jsx";
 import Profile from "./components/profile/profile.jsx";
 import BoardUser from "./components/boardUser/boardUser.jsx";
+import Footer from './components/footer/footer.jsx';
 
 import { logout } from './actions/auth.js';
 import { clearMessage } from './actions/message.js';
@@ -87,6 +88,7 @@ const App = () => {
                         <Route path="/user" component={BoardUser} />
                     </Switch>
                 </div>
+                <Footer/>
             </div>
         </Router>
     )

@@ -1,0 +1,129 @@
+.home-head{
+    margin: 0 auto;
+    padding: 100px 0 85px;
+}
+
+.home-head-name{
+    font-size: 48px;
+    line-height: 1.23;
+    margin-bottom: 20px;
+}
+
+.home-main-container{
+    padding-top: 10px;
+    background-color: #e6e6e6;
+}
+
+@media screen and (max-width: 960px){
+    .t-col {
+        float: none;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .t-col {
+        display: inline;
+        float: left;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 100%;
+    }
+}
+@media screen and (min-width: 1201px){
+    .t-col{
+        display: inline;
+        float: left;
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 100%;
+        
+    }
+}
+
+@media screen and (max-width: 960px){
+    .t-col_8 {
+        max-width: 620px;
+    }
+}
+@media screen and (min-width: 1201px){
+    .t-col_8{
+        max-width: 860px;
+    }
+}
+
+
+@media screen and (max-width: 1200px){
+    .t-prefix_2 {
+        padding-left: 160px;
+    }
+}
+
+@media screen and (max-width: 960px){
+    .t-prefix_2 {
+        padding-left: 20px;
+    }
+}
+
+@media screen and (min-width: 1201px){
+    .t-prefix_2{
+        padding-left: 200px;
+    }
+}
+
+
+.t-cell{
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@media screen and (max-width: 1200px)
+{
+    .t-description {
+        font-size: 16px;
+    }
+}
+
+@media screen and (min-width: 1201px){
+    .t-description{
+        font-size: 18px;
+        line-height: 1.55;
+    }
+}
+
+
+@media screen and (max-width: 1200px){
+    .t-name {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 1201px){
+    .t-name{
+        margin-bottom: 14px;
+        font-size: 20px;
+        line-height: 1.35;
+        font-weight: bold;
+    }
+}
+
+.t-img{
+    width: 55px;
+}
+
+@media screen and (max-width: 960px){
+    .t-separator {
+        margin-bottom: 40px!important;
+    }
+}
+
+.t-separator{
+    margin-bottom: 65px;
+    clear: both;
+}
