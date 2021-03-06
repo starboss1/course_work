@@ -5,6 +5,7 @@ import db from './app/models/index.js';
 import dbConfig from './app/config/db.config.js';
 import authRoutes from './app/routes/auth.routes.js';
 import userRoutes from './app/routes/user.routes.js';
+import documentRoutes from './app/routes/document.routes.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 });
 authRoutes(app);
 userRoutes(app);
+documentRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

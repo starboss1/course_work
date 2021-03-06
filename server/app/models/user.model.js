@@ -11,6 +11,18 @@ const User = mongoose.model(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Role'
             }
+        ],
+        createdDocuments: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Document'
+            }
+        ],
+        redactedDocuments: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Document'
+            }
         ]
     })
 );

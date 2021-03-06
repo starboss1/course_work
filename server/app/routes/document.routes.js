@@ -1,5 +1,5 @@
 import { verifyToken } from '../middlewares/index.js';
-import * as controller from '../controllers/user.controller.js';
+import * as controller from '../controllers/document.controller.js';
 
 export default (app) => {
     app.use((req, res, next) => {
@@ -10,9 +10,7 @@ export default (app) => {
         next();
     });
 
-    app.get('/api/test/all', controller.allAccess);
+    app.post('/api/createDocument', [verifyToken], controller.createDocument);
 
-    app.get('/api/test/user', [verifyToken], controller.userBoard);
-
-    app.get('api/getUserDocuments', [verifyToken], controller.userDocuments);
+    app.delete('/api/deleteDocument', [verifyToken], controller.deleteDocument)
 }

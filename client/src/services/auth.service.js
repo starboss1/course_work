@@ -1,14 +1,13 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8080/api/auth/';
+import { API_URL_SIGNIN, API_URL_SIGNUP } from '../config.js'
 
 const register = (username, email, password) => {
-    return axios.post(API_URL + 'signup', { username, email, password });
+    return axios.post(API_URL_SIGNUP, { username, email, password });
 }
 
 const login = (username, password) => {
     return axios
-        .post(API_URL + 'signin', { username, password })
+        .post(API_URL_SIGNIN, { username, password })
         .then((response) => {
             if (response.data.accessToken) {
                 localStorage.setItem('user', JSON.stringify(response.data));
