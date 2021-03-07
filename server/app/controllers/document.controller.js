@@ -5,7 +5,9 @@ const Document = db.document;
 const User = db.user;
 
 const createDocument = (req, res) => {
-    const token = JSON.parse(req.headers['x-access-token']);
+    const token = JSON.parse(
+        Buffer.from(req.headers['x-access-token'].split('.')[1], 'base64').toString('ascii')
+    );
     User.findOne({ username: token.username })
         .exec((err, user) => {
             if (err) {
@@ -37,8 +39,10 @@ const createDocument = (req, res) => {
 }
 
 const deleteDocument = (req, res) => {
-    const token = JSON.parse(req.headers['x-access-token']);
-    const documentId = req.body.documentId;
+    const token = JSON.parse(
+        Buffer.from(req.headers['x-access-token'].split('.')[1], 'base64').toString('ascii')
+    );
+    const documentId = req.params.documentId;
     User.findOne({ username: token.username })
         .exec((err, user) => {
             if (err) {

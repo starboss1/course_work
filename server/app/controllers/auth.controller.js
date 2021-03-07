@@ -80,7 +80,7 @@ const signin = (req, res) => {
                 });
             }
 
-            const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
+            const token = jwt.sign({ id: user.id, username: user.username }, config.secret, { expiresIn: 86400 });
 
             const authorities = [];
 

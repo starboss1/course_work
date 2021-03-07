@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import './home.css';
 
@@ -12,8 +11,9 @@ import forkImg from '../../assets/fork.svg';
 import secureImg from '../../assets/secure.svg';
 import textEditorImg from '../../assets/text_editor.svg';
 import undoImg from '../../assets/undo.svg';
+import documentService from '../../services/document.service';
 
-const Home = () => {
+const Home = (props) => {
     const [content, setContent] = useState("");
 
     useEffect(() => {
@@ -29,12 +29,24 @@ const Home = () => {
         );
     }, []);
 
+    const handleClick = (e) => {
+        documentService.createDocument()
+            .then((response) => {
+                props.history.push("/profile");
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log('error', err);
+            });
+    }
+
     return (
         <div>
             <div className="home-head text-center">
                 <h2 className="home-head-name">KMADOC</h2>
                 <h4 className="home-head-description">KMADOC допомагає зручно і швидко працювати з документами в одному місці</h4>
-                <Link className="create-document" to={{pathname: "/createDocument"}}><button type="button" className="btn btn-primary btn block mt-5">Створити документ</button></Link>
+                <button type="button" onClick={handleClick} className="btn btn-primary btn block mt-5 create-document">Створити документ</button>
+                
 
                 <img className="mt-5" src={homePageImg} alt={'Home page'}/>
             </div>

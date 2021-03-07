@@ -14,5 +14,5 @@ export default (app) => {
 
     app.get('/api/test/user', [verifyToken], controller.userBoard);
 
-    app.get('api/getUserDocuments', [verifyToken], controller.userDocuments);
+    app.get('/api/getUserDocuments', [verifyToken], controller.userDocuments);
 }

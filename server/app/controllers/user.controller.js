@@ -12,7 +12,9 @@ export const userBoard = (req, res) => {
 };
 
 export const userDocuments = (req, res) => {
-    const token = JSON.parse(req.headers['x-access-token']);
+    const token = JSON.parse(
+        Buffer.from(req.headers['x-access-token'].split('.')[1], 'base64').toString('ascii')
+    );
     User.findOne({ username: token.username })
         .exec((err, user) => {
             if (err) {
