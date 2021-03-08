@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Router, Switch, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,6 +10,7 @@ import Home from "./components/home/home.jsx";
 import Profile from "./components/profile/profile.jsx";
 import BoardUser from "./components/boardUser/boardUser.jsx";
 import Footer from './components/footer/footer.jsx';
+import Document from './components/document/document.jsx'
 
 import { logout } from './actions/auth.js';
 import { clearMessage } from './actions/message.js';
@@ -86,6 +87,7 @@ const App = () => {
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/profile" component={Profile} />
                         <Route path="/user" component={BoardUser} />
+                        <Route exact path="/document/:documentId" component={Document} />
                     </Switch>
                 </div>
                 <Footer/>

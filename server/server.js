@@ -1,4 +1,5 @@
 import express from 'express';
+import http from 'http';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import db from './app/models/index.js';
@@ -7,7 +8,34 @@ import authRoutes from './app/routes/auth.routes.js';
 import userRoutes from './app/routes/user.routes.js';
 import documentRoutes from './app/routes/document.routes.js';
 
+import WebSocket from 'ws';
+import WebSocketJSONStream from '@teamwork/websocket-json-stream';
+import ShareDB from 'sharedb';
+import richText from 'rich-text';
+
 const app = express();
+const server = http.createServer(app);
+
+ShareDB.types.register(richText.type);
+
+const shareDBServer = new ShareDB();
+const connection = shareDBServer.connect()
+
+const doc = connection.get('documents', 'firstDocument');
+
+doc.fetch((err) => {
+    if (err) throw err;
+    if (doc.type === null) {
+        doc.create([{ insert: 'Hello World!' }], 'rich-text', () => {
+            const wss = new WebSocket.Server({ server: server });
+            wss.on('connection', (ws) => {
+                const jsonStream = new WebSocketJSONStream(ws);
+                shareDBServer.listen(jsonStream);
+            });
+        });
+    }
+    return;
+});
 
 const corsOptions = {
     origin: 'http://localhost:3000'
@@ -47,9 +75,10 @@ documentRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+server.listen(PORT);
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
 
 function initial () {
     Role.estimatedDocumentCount((err, count) => {
