@@ -33,7 +33,15 @@ export const userDocuments = (req, res) => {
                         return;
                     }
 
-                    res.send({ documents: documents });
+                    Document.find({ redactors: user._id }, 'documentId title', {},
+                        (err, redactedDoc) => {
+                            if (err) {
+                                res.status(500).send({ message: err });
+                                return;
+                            }
+
+                            res.send({ ownerDocuments: documents, redactorDocuments: redactedDoc });
+                        });
                 }
             );
         });

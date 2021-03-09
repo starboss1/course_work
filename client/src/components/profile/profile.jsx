@@ -10,12 +10,13 @@ import documentService from '../../services/document.service.js';
 
 const Profile = () => {
     const { user: currentUser } = useSelector((state) => state.auth);
-    const [userDocuments, setUserDocuments] = useState();
+    const [ownerDocuments, setOwnerDocuments] = useState();
+    const [redactorDocuments, setRedactorDocuments] = useState();
 
     useEffect(() => {
         let mounted = true;
         userService.getUserDocuments()
-        .then(response => mounted && setUserDocuments([...response.data.documents]))
+        .then(response => mounted && (setOwnerDocuments([...response.data.ownerDocuments]) || setRedactorDocuments([...response.data.redactorDocuments])))
         .catch(error => console.log("error while get user documents", error));
     }, []);
 
@@ -29,7 +30,7 @@ const Profile = () => {
             .catch(err => console.log('error while delete ', err));
     }
 
-    const documentList = userDocuments && userDocuments.map(elem => {
+    const ownerDocumentList = ownerDocuments && ownerDocuments.map(elem => {
         return <div key={elem._id} className="col-xl-4 col-lg-4 col-md-6 col-sm-12  p-2 p-md-3 document-card">
             
                 <div className="card">
@@ -40,6 +41,22 @@ const Profile = () => {
                         </div>
                     </Link>
                     <button value={elem.documentId} className="btn btn-primary" onClick={(e) => handleDeleteDocument(e.target.value)}>Delete</button>
+                </div>
+            
+            
+            </div>
+    });
+
+    const redactorDocumentList = redactorDocuments && redactorDocuments.map(elem => {
+        return <div key={elem._id} className="col-xl-4 col-lg-4 col-md-6 col-sm-12  p-2 p-md-3 document-card">
+            
+                <div className="card">
+                    <Link to={{pathname :`/document/${elem.documentId}`}}>
+                        <img className="card-img-top" src={documentImg} alt="Document img"/>
+                        <div className="card-body">
+                            <h4 className="card-title">{elem.title}</h4>
+                        </div>
+                    </Link>
                 </div>
             
             
@@ -74,8 +91,9 @@ const Profile = () => {
                     ))}
             </ul>
             <h3>Мої документи</h3>
-            <div className="row d-flex justify-content-start">{documentList}</div>
-            
+            <div className="row d-flex justify-content-start">{ownerDocumentList}</div>
+            <h3>Доступні документи</h3>
+            <div className="row d-flex justify-content-start">{redactorDocumentList}</div>
         </div>
     );
 };

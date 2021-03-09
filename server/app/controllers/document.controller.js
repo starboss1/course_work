@@ -66,4 +66,69 @@ const deleteDocument = (req, res) => {
         });
 }
 
-export { createDocument, deleteDocument }
+const inviteUserToDocument = (req, res) => {
+    const documentId = req.body.documentId;
+    const userEmail = req.body.userEmail;
+    const token = JSON.parse(
+        Buffer.from(req.headers['x-access-token'].split('.')[1], 'base64').toString('ascii')
+    );
+
+    User.findOne({ username: token.username })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({ message: 'User not found.' });
+            }
+
+            User.findOne({ email: userEmail })
+                .exec((err, inviteUser) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+
+                    if (!inviteUser) {
+                        return res.status(404).send({ message: 'User with email ' + userEmail + ' not found.' });
+                    }
+
+                    Document.findOne({ documentId: documentId, owner: user._id })
+                        .exec((err, docToModify) => {
+                            if (err) {
+                                res.status(500).send({ message: err });
+                                return;
+                            }
+
+                            if (!docToModify) {
+                                res.status(404).send({ message: 'Document not found' });
+                                return;
+                            }
+
+                            inviteUser.redactedDocuments.push(docToModify._id);
+                            docToModify.redactors.push(inviteUser._id);
+
+                            inviteUser.save();
+                            docToModify.save();
+
+                            res.send({ message: 'User invited to document successfully' });
+                        });
+
+                    // Document.updateOne({ documentId: documentId, owner: user._id }, { $push: { redactors: inviteUser._id } })
+                    //     .exec((err, modifyRes) => {
+                    //         if (err) {
+                    //             res.status(500).send({ message: err });
+                    //             return;
+                    //         }
+
+                    //         inviteUser.redactedDocuments.push()
+
+                    //         res.send({ message: 'User invited to document successfully' });
+                    //     });
+                });
+        });
+}
+
+export { createDocument, deleteDocument, inviteUserToDocument }

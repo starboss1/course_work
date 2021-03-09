@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import Sharedb from "sharedb/lib/client";
 import richText from "rich-text";
 
 import "./document.css";
+import documentService from "../../services/document.service";
 
 // Registering the rich text type to make sharedb work
 // with quill editor
@@ -21,6 +22,17 @@ const connection = new Sharedb.Connection(socket);
 const doc = connection.get("documents", "firstDocument");
 
 const Document = (props) => {
+
+    const [inviteUserEmail, setInviteUserEmail] = useState("");
+
+    const handleClick = (e) => {
+        documentService.inviteUserToDocument(props.match.params.documentId, inviteUserEmail)
+            .then((res) => {
+                alert('User '+inviteUserEmail+' invited to document');
+                setInviteUserEmail("");
+            })
+            .catch((err) => console.log('Error while inviting user to document ', err));
+    }
     console.log('props path = '+props.match.params.documentId);
     useEffect(() => {
         doc.subscribe((err) => {
@@ -69,8 +81,15 @@ const Document = (props) => {
     }, []);
 
     return (
-        <div style={{ margin: "5%", border: "1px solid" }}>
-            <div id="editor"></div>
+        <div className="container">
+            <div>
+                <label>Введіть пошту користувача, якого ви бажаєте додати</label>
+                <input type="email" name="addUserEmail" value={inviteUserEmail} onChange={(e) => setInviteUserEmail(e.target.value)} />
+                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary" onClick={handleClick}>Add user</button>
+            </div>
+            <div style={{ margin: "3% 3%", border: "1px solid" }}>
+                <div id="editor"></div>
+            </div>
         </div>
     );
 };
