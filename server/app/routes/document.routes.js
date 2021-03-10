@@ -15,4 +15,6 @@ export default (app) => {
     app.delete('/api/deleteDocument/:documentId', [verifyToken], controller.deleteDocument);
 
     app.post('/api/inviteUser', [verifyToken], controller.inviteUserToDocument);
+
+    app.get('/api/documentRedactors/:documentId', [verifyToken], controller.getDocumentRedactors);
 }

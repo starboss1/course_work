@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL_ADD_USER_TO_DOCUMENT, API_URL_CREATE_DOCUMENT, API_URL_DELETE_DOCUMENT } from '../config.js';
+import { API_URL_ADD_USER_TO_DOCUMENT, API_URL_CREATE_DOCUMENT, API_URL_DELETE_DOCUMENT, API_URL_GET_DOCUMENT_REDACTORS } from '../config.js';
 import authHeader from './auth-header.js';
 
 const createDocument = () => {
@@ -14,4 +14,8 @@ const inviteUserToDocument = (documentId, userEmail) => {
     return axios.post(API_URL_ADD_USER_TO_DOCUMENT, { documentId: documentId, userEmail: userEmail }, { headers: authHeader() });
 }
 
-export default { createDocument, deleteUserDocument, inviteUserToDocument }
+const getDocumentRedactors = (documentId) => {
+    return axios.get(API_URL_GET_DOCUMENT_REDACTORS + '/'+documentId, { headers: authHeader() });
+}
+
+export default { createDocument, deleteUserDocument, inviteUserToDocument, getDocumentRedactors }

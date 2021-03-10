@@ -66,6 +66,31 @@ const deleteDocument = (req, res) => {
         });
 }
 
+const getDocumentRedactors = (req, res) => {
+    const documentId = req.params.documentId;
+    Document.findOne({ documentId: documentId })
+        .exec((err, document) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!document) {
+                res.status(404).send({ message: 'Document not found.' });
+                return;
+            }
+
+            User.find({ _id: { $in: document.redactors } }, 'username', {},
+                (err, users) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+                    res.send({ documentRedactors: users });
+                })
+        })
+}
+
 const inviteUserToDocument = (req, res) => {
     const documentId = req.body.documentId;
     const userEmail = req.body.userEmail;
@@ -115,20 +140,8 @@ const inviteUserToDocument = (req, res) => {
 
                             res.send({ message: 'User invited to document successfully' });
                         });
-
-                    // Document.updateOne({ documentId: documentId, owner: user._id }, { $push: { redactors: inviteUser._id } })
-                    //     .exec((err, modifyRes) => {
-                    //         if (err) {
-                    //             res.status(500).send({ message: err });
-                    //             return;
-                    //         }
-
-                    //         inviteUser.redactedDocuments.push()
-
-                    //         res.send({ message: 'User invited to document successfully' });
-                    //     });
                 });
         });
 }
 
-export { createDocument, deleteDocument, inviteUserToDocument }
+export { createDocument, deleteDocument, inviteUserToDocument, getDocumentRedactors }
