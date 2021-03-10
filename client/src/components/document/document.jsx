@@ -17,11 +17,12 @@ Sharedb.types.register(richText.type);
 const socket = new WebSocket("ws://127.0.0.1:8080");
 const connection = new Sharedb.Connection(socket);
 
-// Querying for out document
-
-const doc = connection.get("documents", "firstDocument");
 
 const Document = (props) => {
+
+    // Querying for out document
+
+    const doc = connection.get("documents", props.match.params);
 
     const [inviteUserEmail, setInviteUserEmail] = useState("");
     const [redactors, setRedactors] = useState();
