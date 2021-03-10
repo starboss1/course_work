@@ -22,7 +22,7 @@ const Document = (props) => {
 
     // Querying for out document
 
-    const doc = connection.get("documents", props.match.params);
+    const doc = connection.get("documents", '' + props.match.params.documentId);
 
     const [inviteUserEmail, setInviteUserEmail] = useState("");
     const [redactors, setRedactors] = useState();
@@ -92,7 +92,7 @@ const Document = (props) => {
 
     const redactorsList = redactors && <ul className="list-group">
         { redactors.map(elem => {
-        return <li className="list-group-item">{elem.username}</li>
+        return <li key={elem._id} className="list-group-item">{elem.username}</li>
     })
     }
     </ul> 

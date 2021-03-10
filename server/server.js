@@ -8,38 +8,23 @@ import authRoutes from './app/routes/auth.routes.js';
 import userRoutes from './app/routes/user.routes.js';
 import documentRoutes from './app/routes/document.routes.js';
 
-import shareDbMongo from 'sharedb-mongo'
 import WebSocket from 'ws';
 import WebSocketJSONStream from '@teamwork/websocket-json-stream';
 import ShareDB from 'sharedb';
 import richText from 'rich-text';
+
+import { shareDBServer } from './serverShareDb.js'
 
 const app = express();
 const server = http.createServer(app);
 
 ShareDB.types.register(richText.type);
 
-const documentDb = shareDbMongo(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.SHARE_DOCUMENTS_DB}`);
-const shareDBServer = new ShareDB({ 'db': documentDb });
-// const connection = shareDBServer.connect()
-
 const wss = new WebSocket.Server({ server: server });
 wss.on('connection', (ws) => {
     const jsonStream = new WebSocketJSONStream(ws);
     shareDBServer.listen(jsonStream);
 });
-
-// const doc = connection.get('documents', 'firstDocument');
-
-// doc.fetch((err) => {
-//     if (err) throw err;
-//     if (doc.type === null) {
-//         doc.create([{ insert: 'Hello World!' }], 'rich-text', () => {
-           
-//         });
-//     }
-//     return;
-// });
 
 const corsOptions = {
     origin: 'http://localhost:3000'

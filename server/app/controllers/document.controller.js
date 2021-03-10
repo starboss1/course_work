@@ -1,5 +1,6 @@
 import db from '../models/index.js';
 import { v4 as uuidv4 } from 'uuid'
+import { createShareDbDocument } from '../../serverShareDb.js';
 
 const Document = db.document;
 const User = db.user;
@@ -32,7 +33,7 @@ const createDocument = (req, res) => {
                     res.status(500).send({ message: err });
                     return;
                 }
-
+                createShareDbDocument('' + document.documentId);
                 res.send({ message: 'Document was created successfully!' });
             })
         });
