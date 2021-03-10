@@ -8,6 +8,7 @@ import authRoutes from './app/routes/auth.routes.js';
 import userRoutes from './app/routes/user.routes.js';
 import documentRoutes from './app/routes/document.routes.js';
 
+import shareDbMongo from 'sharedb-mongo'
 import WebSocket from 'ws';
 import WebSocketJSONStream from '@teamwork/websocket-json-stream';
 import ShareDB from 'sharedb';
@@ -18,7 +19,8 @@ const server = http.createServer(app);
 
 ShareDB.types.register(richText.type);
 
-const shareDBServer = new ShareDB();
+const documentDb = shareDbMongo(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.SHARE_DOCUMENTS_DB}`);
+const shareDBServer = new ShareDB({ 'db': documentDb });
 const connection = shareDBServer.connect()
 
 const doc = connection.get('documents', 'firstDocument');
