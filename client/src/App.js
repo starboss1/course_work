@@ -34,7 +34,7 @@ const App = () => {
     return(
         <Router history={history}>
             <div>
-                <nav className="navbar navbar-expand navbar-dark bg-dark">
+                <nav className="navbar navbar-expand navbar-dark navbar-custom">
                     <Link to={"/"} className="navbar-brand">KMADOC</Link>
                     <div className="navbar-nav mr-auto">
                         <li className="nav-item">
@@ -59,7 +59,7 @@ const App = () => {
                         </li>
                         <li className="nav-item">
                             <a href="/login" className="nav-link" onClick={logOut}>
-                            LogOut
+                            Вийти
                             </a>
                         </li>
                         </div>
@@ -67,13 +67,13 @@ const App = () => {
                         <div className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <Link to={"/login"} className="nav-link">
-                            Login
+                            Увійти
                             </Link>
                         </li>
 
                         <li className="nav-item">
                             <Link to={"/register"} className="nav-link">
-                            Sign Up
+                            Реєстрація
                             </Link>
                         </li>
                         </div>
