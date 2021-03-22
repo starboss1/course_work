@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Quill from "quill";
-import "quill/dist/quill.bubble.css";
+import QuillCursors  from 'quill-cursors';
+import 'quill/dist/quill.snow.css';
 import Sharedb from "sharedb/lib/client";
 import richText from "rich-text";
+
+import ReconnectingWebSocket  from 'reconnecting-websocket'
 
 import "./document.css";
 import documentService from "../../services/document.service";
@@ -12,17 +15,13 @@ import documentService from "../../services/document.service";
 
 Sharedb.types.register(richText.type);
 
-// Connection to out socket server
-
-const socket = new WebSocket("ws://127.0.0.1:8080");
-const connection = new Sharedb.Connection(socket);
-
-
 const Document = (props) => {
 
+    Quill.register('modules/cursors', QuillCursors);
+    
     // Querying for out document
 
-    const doc = connection.get("documents", '' + props.match.params.documentId);
+    
 
     const [inviteUserEmail, setInviteUserEmail] = useState("");
     const [redactors, setRedactors] = useState();
@@ -35,38 +34,37 @@ const Document = (props) => {
             })
             .catch((err) => console.log('Error while inviting user to document ', err));
     }
-    console.log('props path = '+props.match.params.documentId);
 
     useEffect(() => {
+        console.log('call user redactors effect');
         let mounted = true;
         documentService.getDocumentRedactors(props.match.params.documentId)
         .then(response => mounted && setRedactors([...response.data.documentRedactors]))
         .catch(error => console.log("error while get document redactors", error));
-    }, [])
+    }, [props.match.params.documentId]);
+
+   
 
     useEffect(() => {
+        // Connection to out socket server
+        const socket = new ReconnectingWebSocket("ws://127.0.0.1:8080");
+        const connection = new Sharedb.Connection(socket);
+        const doc = connection.get("documents", '' + props.match.params.documentId);
+        console.log('call subscribe effect');
         doc.subscribe((err) => {
             if (err) throw err;
-
-            const toolbarOptions = [
-                "bold",
-                "italic",
-                "underline",
-                "strike",
-                "align",
-            ];
-            const options = {
-                theme: "bubble",
-                modules: {
-                    toolbar: toolbarOptions,
-                },
-            };
-
-            let quill = new Quill("#editor", options);
-
             // On Initialising if data is present in server
             // Updaing its content to editor
-
+            console.log('subscribed');
+            let quill = new Quill("#editor", {
+                theme: 'snow',
+                modules: {
+                    cursors: true,
+                    history: {
+                        userOnly: true
+                    },
+                },
+            });
             quill.setContents(doc.data);
 
             // On text change publishing to our server
@@ -86,9 +84,11 @@ const Document = (props) => {
         });
 
         return () => {
+            console.log('unsubscribe');
             connection.close();
+            socket.close();
         };
-    }, []);
+    }, [props.match.params.documentId]);
 
     const redactorsList = redactors && <ul className="list-group">
         { redactors.map(elem => {
@@ -102,7 +102,7 @@ const Document = (props) => {
             <div>
                 <label>Введіть пошту користувача, якого ви бажаєте додати</label>
                 <input type="email" name="addUserEmail" value={inviteUserEmail} onChange={(e) => setInviteUserEmail(e.target.value)} />
-                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary" onClick={handleClick}>Add user</button>
+                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary ml-3" onClick={handleClick}>Add user</button>
             </div>
             <div style={{ margin: "3% 0%", border: "1px solid" }}>
                 <div id="editor"></div>
