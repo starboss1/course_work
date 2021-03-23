@@ -14,10 +14,15 @@ import documentService from "../../services/document.service";
 // with quill editor
 
 Sharedb.types.register(richText.type);
+const WAIT_INTERVAL = 4000;
+let timer = null;
 
 const Document = (props) => {
+    
 
+    let SizeStyle = Quill.import('attributors/style/size');
     Quill.register('modules/cursors', QuillCursors);
+    Quill.register(SizeStyle, true);
     
     // Querying for out document
 
@@ -25,6 +30,7 @@ const Document = (props) => {
 
     const [inviteUserEmail, setInviteUserEmail] = useState("");
     const [redactors, setRedactors] = useState();
+    const [documentTitle, setDocumentTitle] = useState("");
 
     const handleClick = (e) => {
         documentService.inviteUserToDocument(props.match.params.documentId, inviteUserEmail)
@@ -38,8 +44,8 @@ const Document = (props) => {
     useEffect(() => {
         console.log('call user redactors effect');
         let mounted = true;
-        documentService.getDocumentRedactors(props.match.params.documentId)
-        .then(response => mounted && setRedactors([...response.data.documentRedactors]))
+        documentService.getDocumentInfo(props.match.params.documentId)
+        .then(response =>  mounted && (setRedactors([...response.data.documentRedactors]) || setDocumentTitle(response.data.documentTitle)))
         .catch(error => console.log("error while get document redactors", error));
     }, [props.match.params.documentId]);
 
@@ -59,8 +65,11 @@ const Document = (props) => {
             let quill = new Quill("#editor", {
                 theme: 'snow',
                 modules: {
+                    toolbar: true,
                     cursors: true,
                     history: {
+                        delay: 2000,
+                        maxStack: 500,
                         userOnly: true
                     },
                 },
@@ -90,6 +99,20 @@ const Document = (props) => {
         };
     }, [props.match.params.documentId]);
 
+    const handleChangeDocumentTitle = (newDocumentTitle) => {
+        setDocumentTitle(newDocumentTitle);
+        if(timer){
+            clearTimeout(timer);
+            timer = null;
+       
+        }
+        timer = setTimeout(
+            () => documentService.changeDocumentTitle(props.match.params.documentId, newDocumentTitle)
+                .then(res => console.log('change title'))
+                .catch(err => console.log('error while change document title',err)), 
+                WAIT_INTERVAL);
+    }
+
     const redactorsList = redactors && <ul className="list-group">
         { redactors.map(elem => {
         return <li key={elem._id} className="list-group-item">{elem.username}</li>
@@ -100,9 +123,8 @@ const Document = (props) => {
     return (
         <div className="container">
             <div>
-                <label>Введіть пошту користувача, якого ви бажаєте додати</label>
-                <input type="email" name="addUserEmail" value={inviteUserEmail} onChange={(e) => setInviteUserEmail(e.target.value)} />
-                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary ml-3" onClick={handleClick}>Add user</button>
+                <span>Документ - </span>
+                <input type="text" className="form-control document-title-input" onChange={(e) => handleChangeDocumentTitle(e.target.value)} value={documentTitle}/>
             </div>
             <div style={{ margin: "3% 0%", border: "1px solid" }}>
                 <div id="editor"></div>
@@ -111,6 +133,12 @@ const Document = (props) => {
             <div>
                 <div className="my-3">Користувачі</div>
                 { redactorsList }
+            </div>
+
+            <div>
+                <label>Введіть пошту користувача, якого ви бажаєте додати</label>
+                <input type="email" name="addUserEmail" value={inviteUserEmail} onChange={(e) => setInviteUserEmail(e.target.value)} />
+                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary ml-3" onClick={handleClick}>Add user</button>
             </div>
         </div>
     );

@@ -6,4 +6,5 @@ export const API_URL_USER_DOCUMENTS = 'http://localhost:8080/api/getUserDocument
 export const API_URL_CREATE_DOCUMENT = 'http://localhost:8080/api/createDocument';
 export const API_URL_DELETE_DOCUMENT = 'http://localhost:8080/api/deleteDocument';
 export const API_URL_ADD_USER_TO_DOCUMENT = 'http://localhost:8080/api/inviteUser';
-export const API_URL_GET_DOCUMENT_REDACTORS = 'http://localhost:8080/api/documentRedactors'
+export const API_URL_GET_DOCUMENT_INFO = 'http://localhost:8080/api/documentInfo';
+export const API_URL_CHANGE_DOCUMENT_TITLE = 'http://localhost:8080/api/changeDocumentTitle';

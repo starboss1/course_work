@@ -16,5 +16,7 @@ export default (app) => {
 
     app.post('/api/inviteUser', [verifyToken], controller.inviteUserToDocument);
 
-    app.get('/api/documentRedactors/:documentId', [verifyToken], controller.getDocumentRedactors);
+    app.get('/api/documentInfo/:documentId', [verifyToken], controller.getDocumentInfo);
+
+    app.post('/api/changeDocumentTitle', [verifyToken], controller.changeDocumentTitle)
 }

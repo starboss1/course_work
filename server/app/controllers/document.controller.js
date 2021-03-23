@@ -67,7 +67,26 @@ const deleteDocument = (req, res) => {
         });
 }
 
-const getDocumentRedactors = (req, res) => {
+const changeDocumentTitle = (req, res) => {
+    Document.findOne({ documentId: req.body.documentId })
+        .exec((err, document) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!document) {
+                return res.status(404).send({ message: 'Document not found.' });
+            }
+
+            document.title = req.body.newDocumentTitle ? req.body.newDocumentTitle : 'Document title';
+            document.save();
+
+            res.send({ message: 'Document title was changed successfully!' });
+        })
+}
+
+const getDocumentInfo = (req, res) => {
     const documentId = req.params.documentId;
     Document.findOne({ documentId: documentId })
         .exec((err, document) => {
@@ -87,7 +106,7 @@ const getDocumentRedactors = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
-                    res.send({ documentRedactors: users });
+                    res.send({ documentTitle: document.title, documentRedactors: users });
                 })
         })
 }
@@ -145,4 +164,4 @@ const inviteUserToDocument = (req, res) => {
         });
 }
 
-export { createDocument, deleteDocument, inviteUserToDocument, getDocumentRedactors }
+export { createDocument, deleteDocument, inviteUserToDocument, getDocumentInfo, changeDocumentTitle }
