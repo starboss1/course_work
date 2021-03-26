@@ -33,20 +33,14 @@ const App = () => {
 
     return(
         <Router history={history}>
-            <div>
+            <div className="page-container">
+                <div className="content-wrap">
                 <nav className="navbar navbar-expand navbar-dark navbar-custom">
                     <Link to={"/"} className="navbar-brand">KMADOC</Link>
                     <div className="navbar-nav mr-auto">
                         <li className="nav-item">
                             <Link to={"/home"} className="nav-link">Home</Link>
                         </li>
-                        {currentUser && (
-                        <li className="nav-item">
-                            <Link to={"/user"} className="nav-link">
-                            User
-                            </Link>
-                        </li>
-                        )}
                     </div>
 
 
@@ -89,6 +83,7 @@ const App = () => {
                         <Route path="/user" component={BoardUser} />
                         <Route exact path="/document/:documentId" component={Document} />
                     </Switch>
+                </div>
                 </div>
                 <Footer/>
             </div>

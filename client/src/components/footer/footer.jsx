@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <div className="footer-basic mt-5">
+        <div className="footer-basic footer py-3">
             <footer>
                 <div className="row">
                     <div className="col-2">

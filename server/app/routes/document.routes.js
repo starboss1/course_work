@@ -11,12 +11,8 @@ export default (app) => {
     });
 
     app.post('/api/createDocument', [verifyToken], controller.createDocument);
-
     app.delete('/api/deleteDocument/:documentId', [verifyToken], controller.deleteDocument);
-
     app.post('/api/inviteUser', [verifyToken], controller.inviteUserToDocument);
-
     app.get('/api/documentInfo/:documentId', [verifyToken], controller.getDocumentInfo);
-
     app.post('/api/changeDocumentTitle', [verifyToken], controller.changeDocumentTitle)
 }

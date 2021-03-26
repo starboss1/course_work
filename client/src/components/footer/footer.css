@@ -1,7 +1,9 @@
 .footer-basic {
-    padding:20px 0;
     background-color:#ffffff;
     color:#000;
+    position: relative;
+    bottom: -1px;
+    width: 100%;
   }
   
   .footer-basic ul {

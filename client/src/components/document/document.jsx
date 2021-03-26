@@ -107,7 +107,7 @@ const Document = (props) => {
        
         }
         timer = setTimeout(
-            () => documentService.changeDocumentTitle(props.match.params.documentId, newDocumentTitle)
+            () => documentService.changeDocumentTitle(props.match.params.documentId, newDocumentTitle ? newDocumentTitle : 'Document title')
                 .then(res => console.log('change title'))
                 .catch(err => console.log('error while change document title',err)), 
                 WAIT_INTERVAL);

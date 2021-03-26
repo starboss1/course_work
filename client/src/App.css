@@ -2,7 +2,14 @@ body{
   font-family: 'Roboto Mono', monospace;
   background-color: #e6e6e6;
 }
-
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.content-wrap {
+  flex: 1;
+}
 label {
   display: block;
   margin-top: 10px;
