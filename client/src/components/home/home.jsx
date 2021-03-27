@@ -36,6 +36,10 @@ const Home = (props) => {
                 window.location.reload();
             })
             .catch((err) => {
+                if(err.message.includes('Request failed with status code 403')){
+                    props.history.push('/login');
+                    window.location.reload();
+                }
                 console.log('error', err);
             });
     }

@@ -39,7 +39,7 @@ const App = () => {
                     <Link to={"/"} className="navbar-brand">KMADOC</Link>
                     <div className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <Link to={"/home"} className="nav-link">Home</Link>
+                            <Link to={"/home"} className="nav-link nav-link-white">Home</Link>
                         </li>
                     </div>
 
@@ -47,12 +47,12 @@ const App = () => {
                     {currentUser ? (
                         <div className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link to={"/profile"} className="nav-link">
+                            <Link to={"/profile"} className="nav-link nav-link-white">
                             {currentUser.username}
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="/login" className="nav-link" onClick={logOut}>
+                            <a href="/login" className="nav-link nav-link-white" onClick={logOut}>
                             Вийти
                             </a>
                         </li>
@@ -60,13 +60,13 @@ const App = () => {
                     ) : (
                         <div className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link to={"/login"} className="nav-link">
+                            <Link to={"/login"} className="nav-link nav-link-white">
                             Увійти
                             </Link>
                         </li>
 
                         <li className="nav-item">
-                            <Link to={"/register"} className="nav-link">
+                            <Link to={"/register"} className="nav-link nav-link-white">
                             Реєстрація
                             </Link>
                         </li>

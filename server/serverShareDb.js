@@ -3,7 +3,7 @@ import dbConfig from './app/config/db.config.js';
 import ShareDB from 'sharedb';
 
 export const documentDb = shareDbMongo(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.SHARE_DOCUMENTS_DB}`);
-export const shareDBServer = new ShareDB({ 'db': documentDb });
+export const shareDBServer = new ShareDB({ db: documentDb });
 
 export const createShareDbDocument = (documentId) => {
     const connection = shareDBServer.connect();

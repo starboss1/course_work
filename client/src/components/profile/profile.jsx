@@ -48,7 +48,7 @@ const Profile = () => {
     });
 
     const redactorDocumentList = redactorDocuments && redactorDocuments.map(elem => {
-        return <div key={elem._id} className="col-xl-4 col-lg-4 col-md-6 col-sm-12  p-2 p-md-3 document-card">
+        return <div key={elem._id} className="col-xl-4 col-lg-4 col-md-6 col-sm-12 p-2 p-md-3 document-card">
             
                 <div className="card">
                     <Link to={{pathname :`/document/${elem.documentId}`}}>

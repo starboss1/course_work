@@ -138,7 +138,7 @@ const Document = (props) => {
             <div>
                 <label>Введіть пошту користувача, якого ви бажаєте додати</label>
                 <input type="email" name="addUserEmail" value={inviteUserEmail} onChange={(e) => setInviteUserEmail(e.target.value)} />
-                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary ml-3" onClick={handleClick}>Add user</button>
+                <button type="button" disabled={!inviteUserEmail} className="btn btn-primary ml-3" onClick={handleClick}>Додати користувача</button>
             </div>
         </div>
     );

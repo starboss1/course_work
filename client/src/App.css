@@ -14,7 +14,9 @@ label {
   display: block;
   margin-top: 10px;
 }
-
+.nav-link-white{
+  color: rgba(255,255,255,.9) !important;
+}
 .navbar-custom {
   background-color: rgba(45,70,255,0.43);
 }

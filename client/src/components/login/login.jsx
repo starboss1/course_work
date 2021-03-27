@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import './login.css';
 
@@ -120,6 +120,10 @@ const Login = (props) => {
               )}
               <CheckButton style={{ display: "none" }} ref={checkBtn} />
             </Form>
+            <div class="text-center">
+                <span>Немає аккаунту?</span>
+                <Link to={"/register"}>Зареєструватися</Link>
+            </div>
           </div>
         </div>
         

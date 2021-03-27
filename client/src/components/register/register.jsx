@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom'
 
 import './register.css';
 
@@ -147,7 +148,10 @@ const Register = () => {
                 <button className="btn btn-primary btn-block">Реєстрація</button>
               </div>
             </div>
+            
           )}
+
+          
 
           {message && (
             <div className="form-group">
@@ -158,6 +162,10 @@ const Register = () => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+        <div class="text-center">
+          <span>Вже є аккаунт?</span>
+          <Link to={"/login"}> Увійти</Link>
+         </div>
       </div>
     </div>
   );
