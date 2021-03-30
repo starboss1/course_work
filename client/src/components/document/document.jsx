@@ -10,9 +10,6 @@ import ReconnectingWebSocket  from 'reconnecting-websocket'
 import "./document.css";
 import documentService from "../../services/document.service";
 
-// Registering the rich text type to make sharedb work
-// with quill editor
-
 Sharedb.types.register(richText.type);
 const WAIT_INTERVAL = 4000;
 let timer = null;
@@ -24,10 +21,6 @@ const Document = (props) => {
     Quill.register('modules/cursors', QuillCursors);
     Quill.register(SizeStyle, true);
     
-    // Querying for out document
-
-    
-
     const [inviteUserEmail, setInviteUserEmail] = useState("");
     const [redactors, setRedactors] = useState();
     const [documentTitle, setDocumentTitle] = useState("");

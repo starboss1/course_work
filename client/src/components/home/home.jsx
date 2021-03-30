@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
 import './home.css';
-
-import UserService from '../../services/user.service.js';
 
 import homePageImg from '../../assets/home-page.png'
 import cloudImg from '../../assets/cloud.svg';
@@ -14,20 +10,6 @@ import undoImg from '../../assets/undo.svg';
 import documentService from '../../services/document.service';
 
 const Home = (props) => {
-    const [content, setContent] = useState("");
-
-    useEffect(() => {
-        UserService.getPublicContent().then(
-            (response) => {
-                setContent(response.data);
-            },
-            (error) => {
-                const _content = (error.response && error.response.data) || error.message || error.toString();
-
-                setContent(_content);
-            }
-        );
-    }, []);
 
     const handleClick = (e) => {
         documentService.createDocument()
