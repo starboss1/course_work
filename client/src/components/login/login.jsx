@@ -10,7 +10,7 @@ import CheckButton from 'react-validation/build/button';
 
 import { login } from '../../actions/auth.js';
 
-const required = (value) => {
+const isRequired = (value) => {
     if (!value) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -33,12 +33,12 @@ const Login = (props) => {
 
     const dispatch = useDispatch();
 
-    const onChangeUsername = (e) => {
+    const changeUsername = (e) => {
         const username = e.target.value;
         setUsername(username);
     }
 
-    const onChangePassword = (e) => {
+    const changePass = (e) => {
         const password = e.target.value;
         setPassword(password);
     }
@@ -85,8 +85,8 @@ const Login = (props) => {
                   className="form-control"
                   name="username"
                   value={username}
-                  onChange={onChangeUsername}
-                  validations={[required]}
+                  onChange={changeUsername}
+                  validations={[isRequired]}
                 />
               </div>
     
@@ -97,8 +97,8 @@ const Login = (props) => {
                   className="form-control"
                   name="password"
                   value={password}
-                  onChange={onChangePassword}
-                  validations={[required]}
+                  onChange={changePass}
+                  validations={[isRequired]}
                 />
               </div>
     

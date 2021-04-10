@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import documentImg from '../../assets/document.png';
+
+import { Link, Redirect } from "react-router-dom";
 
 import "./profile.css";
 import userService from "../../services/user.service.js";
 import documentService from '../../services/document.service.js';
 
 const Profile = () => {
-    const { user: currentUser } = useSelector((state) => state.auth);
     const [ownerDocuments, setOwnerDocuments] = useState();
     const [redactorDocuments, setRedactorDocuments] = useState();
+    const { user: currentUser } = useSelector((state) => state.auth);
 
     useEffect(() => {
         let mounted = true;
@@ -37,7 +38,7 @@ const Profile = () => {
                     <Link to={{pathname :`/document/${elem.documentId}`}}>
                         <img className="card-img-top" src={documentImg} alt="Document img"/>
                         <div className="card-body">
-                            <h4 className="card-title">{elem.title}</h4>
+                            <h5 className="card-title">{elem.title}</h5>
                         </div>
                     </Link>
                     <button value={elem.documentId} className="btn btn-primary" onClick={(e) => handleDeleteDocument(e.target.value)}>Delete</button>
@@ -54,7 +55,7 @@ const Profile = () => {
                     <Link to={{pathname :`/document/${elem.documentId}`}}>
                         <img className="card-img-top" src={documentImg} alt="Document img"/>
                         <div className="card-body">
-                            <h4 className="card-title">{elem.title}</h4>
+                            <h5 className="card-title">{elem.title}</h5>
                         </div>
                     </Link>
                 </div>

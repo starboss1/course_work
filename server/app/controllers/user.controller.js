@@ -4,11 +4,11 @@ const User = db.user;
 const Document = db.document;
 
 export const allAccess = (req, res) => {
-    res.status(200).send('Public Content');
+    res.status(200).send('Common test content');
 };
 
 export const userBoard = (req, res) => {
-    res.status(200).send('User Content.');
+    res.status(200).send('Some user test content');
 };
 
 export const userDocuments = (req, res) => {

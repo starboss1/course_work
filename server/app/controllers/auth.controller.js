@@ -34,7 +34,7 @@ const signup = (req, res) => {
                             return;
                         }
 
-                        res.send({ message: 'User was registered successfully!' });
+                        res.send({ message: 'Користувач зареєстрований вдало' });
                     });
                 });
         } else {
@@ -51,7 +51,7 @@ const signup = (req, res) => {
                         return;
                     }
 
-                    res.send({ message: 'User was registed successfully!' });
+                    res.send({ message: 'Користувач зареєстрований вдало' });
                 });
             });
         }
@@ -68,7 +68,7 @@ const signin = (req, res) => {
             }
 
             if (!user) {
-                return res.status(404).send({ message: 'User not found.' });
+                return res.status(404).send({ message: 'Такого користувача не існує.' });
             }
 
             const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
@@ -76,7 +76,7 @@ const signin = (req, res) => {
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
-                    message: 'Invalid Password!'
+                    message: 'Невірний логін чи пароль'
                 });
             }
 
